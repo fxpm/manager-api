@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace FXM\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use CloudCreativity\LaravelJsonApi\Facades\JsonApi;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        JsonApi::defaultApi('v1');
     }
 
     /**

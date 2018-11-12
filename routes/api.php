@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use CloudCreativity\LaravelJsonApi\Facades\JsonApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,23 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'prefix' => 'v1',
+    'namespace' => 'API\\v1',
+    'middleware' => ['auth:api'],
+], function () {
+    Route::get('/', 'StatusController@index');
+});
+
+JsonApi::register('v1', ['namespace' => 'API\v1', 'middleware' => ['auth:api']], function ($api, $router) {
+    $api->resource('users');
+    $api->resource('servers');
+    $api->resource('commands', [
+        'controller' => true,
+        'has-one' => ['server']
+    ]);
+    $api->resource('actions', [
+        'controller' => true,
+        'has-one' => ['server']
+    ]);
 });
